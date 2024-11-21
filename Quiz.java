@@ -8,7 +8,7 @@
  */
 import textio.TextIO;
 
-public class Choice {
+public class Quiz {
     public static void main(String[] args) {
         String[][] choiceQuestions = {
             {"Who is the present fastest man in the world",
@@ -75,7 +75,7 @@ public class Choice {
         // Loop until a valid answer is entered
         while (true) {
             System.out.print("Enter an Option: ");
-            subAnswer = TextIO.getlnString();  // Get user input
+            subAnswer = TextIO.getlnString().toUpperCase();  // Get user input
 
             // Check if input is valid (only A, B, C, D)
             if (subAnswer.equals("A") || subAnswer.equals("B") || subAnswer.equals("C") || subAnswer.equals("D")) {
