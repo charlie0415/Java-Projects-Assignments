@@ -8,7 +8,7 @@
  */
 import textio.TextIO;
 
-public class Quiz {
+public class Choice {
     public static void main(String[] args) {
         String[][] choiceQuestions = {
             {"Who is the present fastest man in the world",
