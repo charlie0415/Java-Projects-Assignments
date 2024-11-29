@@ -4,70 +4,174 @@
 // Access the array, update it, and update length
 // Implement Error handling and test
 // Peruse and if possible re-write in most effifcient way
-import textio.TextIO;
-public class librarySystem {
-    String title, author;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Book {
+    String title;
+    String author;
     int quantity;
 
-    librarySystem(String bookTitle, String bookAuthor, int bookQuantity){
-        title = bookTitle;
-        author = bookAuthor;
-        quantity = bookQuantity;
+    Book(String title, String author, int quantity) {
+        this.title = title;
+        this.author = author;
+        this.quantity = quantity;
     }
 
-    static librarySystem[] books = new librarySystem[3];
-
-    void updateQuantity(int bookQuantity){
-
+    void addQuantity(int amount) {
+        this.quantity += amount;
     }
 
-   public static void main(String[] args) {
-    books[0] = new librarySystem("Wife", "Arnold", 4);
-    books[1] = new librarySystem("Husband", "Timi", 16);
-    books[2] = new librarySystem("Ripe", "Mnull", 12);
-
-    while (true){
-        System.out.println("Enter the assigned number for your activity:");
-        System.out.println("1. Add Books");
-        System.out.println("2. Borrow Books");
-        System.out.println("3. Return Books");
-        System.out.println("4. Exit");
-        int operationInput = TextIO.getlnInt();
-        System.out.println(books[0].author);
-        System.out.println(operationInput);
-        addBooks();
+    void reduceQuantity(int amount) {
+        this.quantity -= amount;
     }
-   }
+}
 
-   public static String addBooks(){
-    System.out.println("Please Enter Name, Author, and Quantity of books, separated by comma");
-    String userInput = TextIO.getlnString(); 
-    String[] inputSplit = userInput.trim().split("\\s*,\\s*");
-    if (inputSplit.length != 3) { // Validate input format
-            return "Error: Invalid input format. Please provide exactly 3 values separated by commas.";
-     } // this block just decided not to Work
-     String name = inputSplit[0];    // Extract and trim the name
-     String author = inputSplit[1]; // Extract and trim the author
-     int quantity;
-     try {
-         quantity = Integer.parseInt(inputSplit[2].trim()); // Parse the quantity to an integer
-     } catch (NumberFormatException e) {
-         return "Error: Quantity must be a valid number.";
-     }
-     int bookStatus = 0;
-     for (int i = 0; i < books.length; i++) {
-        if (books[i].title.equals(name) && books[i].author.equals(author)) {
-            books[i].quantity += quantity;
-            break;
-        } else {
-            bookStatus++;
+public class librarySystem {
+    static ArrayList<Book> library = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        System.out.println("Welcome to the Library System!");
+
+        while (true) {
+            System.out.println("\nChoose an option:");
+            System.out.println("1. Add Books");
+            System.out.println("2. Borrow Books");
+            System.out.println("3. Return Books");
+            System.out.println("4. Exit");
+
+            int choice = getValidIntegerInput();
+
+            switch (choice) {
+                case 1:
+                    addBooks();
+                    break;
+                case 2:
+                    borrowBooks();
+                    break;
+                case 3:
+                    returnBooks();
+                    break;
+                case 4:
+                    System.out.println("Exiting the Library System. Goodbye!");
+                    return;
+                default:
+                    System.out.println("Invalid option. Please choose between 1 and 4.");
+            }
         }
-     }
-     if (bookStatus >= 1) {
-        books.length += 1;
-        books[books.length-1] = new librarySystem(name, author, quantity);
-     }
-     // Return a confirmation message
-     return "Book Added Successfully: Name = " + name + ", Author = " + author + ", Quantity = " + quantity;
- }
+    }
+
+    // Add books to the library
+    public static void addBooks() {
+        System.out.println("Enter book details (title, author, quantity): ");
+        String input = scanner.nextLine();
+        String[] details = input.split("\\s*,\\s*");
+
+        if (details.length != 3) {
+            System.out.println("Error: Please provide exactly 3 values separated by commas.");
+            return;
+        }
+
+        String title = details[0];
+        String author = details[1];
+        int quantity;
+
+        try {
+            quantity = Integer.parseInt(details[2]);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Quantity must be a valid integer.");
+            return;
+        }
+
+        for (Book book : library) {
+            if (book.title.equalsIgnoreCase(title) && book.author.equalsIgnoreCase(author)) {
+                book.addQuantity(quantity);
+                System.out.println("Quantity updated successfully!");
+                return;
+            }
+        }
+
+        library.add(new Book(title, author, quantity));
+        System.out.println("New book added successfully!");
+    }
+
+    // Borrow books from the library
+    public static void borrowBooks() {
+        System.out.println("Enter book title and quantity to borrow (title, quantity): ");
+        String input = scanner.nextLine();
+        String[] details = input.split("\\s*,\\s*");
+
+        if (details.length != 2) {
+            System.out.println("Error: Please provide exactly 2 values separated by commas.");
+            return;
+        }
+
+        String title = details[0];
+        int quantity;
+
+        try {
+            quantity = Integer.parseInt(details[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Quantity must be a valid integer.");
+            return;
+        }
+
+        for (Book book : library) {
+            if (book.title.equalsIgnoreCase(title)) {
+                if (book.quantity >= quantity) {
+                    book.reduceQuantity(quantity);
+                    System.out.println("Book borrowed successfully!");
+                } else {
+                    System.out.println("Error: Not enough books available.");
+                }
+                return;
+            }
+        }
+
+        System.out.println("Error: Book not found in the library.");
+    }
+
+    // Return books to the library
+    public static void returnBooks() {
+        System.out.println("Enter book title and quantity to return (title, quantity): ");
+        String input = scanner.nextLine();
+        String[] details = input.split("\\s*,\\s*");
+
+        if (details.length != 2) {
+            System.out.println("Error: Please provide exactly 2 values separated by commas.");
+            return;
+        }
+
+        String title = details[0];
+        int quantity;
+
+        try {
+            quantity = Integer.parseInt(details[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Quantity must be a valid integer.");
+            return;
+        }
+
+        for (Book book : library) {
+            if (book.title.equalsIgnoreCase(title)) {
+                book.addQuantity(quantity);
+                System.out.println("Book returned successfully!");
+                return;
+            }
+        }
+
+        System.out.println("Error: Book not found in the library.");
+    }
+
+    // Helper function to get valid integer input
+    private static int getValidIntegerInput() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Please enter a valid number.");
+            }
+        }
+    }
 }
