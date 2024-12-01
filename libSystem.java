@@ -1,4 +1,4 @@
-// I am trying to create the Library system from scratch again using textio
+// I am trying to create the Library system from scratch again using textio if possible
 // I will create a class, method and object constructor
 // Then use arraylist to store the objects
 import java.util.ArrayList;
@@ -63,8 +63,8 @@ public class libSystem {
     } // main ends here
 
     public static void addBooks(){
-        boolean add = true;
-        while (add == true) {
+        boolean repeat = true;
+        while (repeat == true) {
             System.out.println("Enter inorder separated by comma: Title, Author, Quantity");
             String userInput = scanner.nextLine();
 
@@ -93,26 +93,15 @@ public class libSystem {
             for (Book book : library){
                 if(book.title.equalsIgnoreCase(title)){
                     book.increaseBook(quantity);
-                    System.out.println("Book has been successfully added!");
-                    return;
+                    break;
                 }
             }
 
             library.add(new Book(title, author, quantity));
-            System.out.println("Do you Wish to Add More Books");
-            System.out.println("Enter y for Yes or n for No:");
-            String response = scanner.nextLine();
-            if (response.equalsIgnoreCase("y")) {
-                continue;
-            }
-            else if (response.equalsIgnoreCase("n")) {
-                System.out.println("Book has been successfully added!");
-                add= false;
-            }
-            else {
-                System.out.println("Error: Invalid Input");
-                return;  
-            }
+            System.out.println("Book has been successfully added!");
+            
+            // Repeat Operation
+            repeat = operationRepetition(repeat, "add");
         } // Loop stops here
             
     } //Add books end here
@@ -150,6 +139,7 @@ public class libSystem {
                 if (book.title.equalsIgnoreCase(title)) {
                     if (quantity >0 && quantity <= book.quantity) {
                         book.reduceBook(quantity);
+                        System.out.println("You have Successfully Borrowed the Books");
                     } else {
                         System.out.println("Error: The quantity you provided is more than we have.");
                     }
@@ -163,20 +153,81 @@ public class libSystem {
                 System.out.println("Requested Book is not Available in Library");
             }
 
-            // which to borrow book again
-            System.out.println("Do you which you borrow again");
-            System.out.println("Enter 'y' for Yes and 'n' for No:");
-            char input = TextIO.getChar();
-
-            if (Character.toString(input).equalsIgnoreCase("y")) {
-                continue;
-            } else {
-                repeat = false;
-            }
+            // Repeat Operation
+            repeat = operationRepetition(repeat, "Borrow");
         }
     } // Borrow ends here
 
-    // Private Starts here
+    // Return Books Function
+    public static void returnBooks(){
+        boolean repeat = true;
+        while (repeat == true) {
+            System.out.println("Enter the Name and Quantity of Books to Return");
+            String[] inputSplit = scanner.nextLine().split("\\s*,\\s*");
+
+            // Check for lenght
+            if (inputSplit.length != 2) {
+                System.out.println("Error: Ensure you've provided two valid inputs");
+                break;
+            }
+
+            String title = inputSplit[0];
+            int quantity;
+            // Error handling for quantity
+            try {
+                quantity = Integer.parseInt(inputSplit[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Second Value is not a number");
+                return;
+            }
+
+            // Check if book is ours
+            boolean isReturned = false;
+            for (Book book : library) {
+                if (title.equalsIgnoreCase(book.title)) {
+                    if (quantity > 0) {
+                        book.increaseBook(quantity);
+                        isReturned = true;
+                        System.out.println("You've Successfully Returned the Book");
+                    } else {
+                        System.out.println("Error: The Quantity you've provided cannot be worked with");
+                        isReturned = false;
+                    }
+                    break;
+                }
+            }
+
+            // Book is not from this library
+            if (isReturned == false) {
+                System.out.println("The Book is not from this Library");
+            }
+
+            // Repetition
+            repeat = operationRepetition(repeat, "return");
+        }
+    }
+
+    // Function to prompt repetition
+    private static boolean operationRepetition(boolean repeat, String operation){
+        System.out.println("Do you Wish to " + operation + " More Books");
+        System.out.println("Enter y for Yes or n for No:");
+        // String response = scanner.nextLine();
+        char input = TextIO.getChar(); //text.io Only worked here; maybe it is too imperative for some string operations?
+
+        if (Character.toString(input).equalsIgnoreCase("y")) {
+            repeat = true;
+        }
+        else if (Character.toString(input).equalsIgnoreCase("n")) {
+            repeat = false;
+        }
+        else{
+            System.out.println("Invalid Input");
+            repeat = false;
+        }
+        return repeat;
+    }
+
+    // Function to valid Input aside Numbers
     private static int getValidInput(){
         while (true) {
             try {
