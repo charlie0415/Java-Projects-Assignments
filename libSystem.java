@@ -49,7 +49,7 @@ public class libSystem {
                     borrowBooks();
                     break;
                 case 3:
-                    // returnBooks();
+                    returnBooks();
                     break;
                 case 4:
                     System.out.println("You are now Exiting the Library. Thanks for your time.");
