@@ -27,7 +27,7 @@ public class libSystem {
 
     // Creating an arraylist to hold the book objects users will be creating
     static ArrayList<Book> library = new ArrayList<>();
-    // Textio has been frustrating and misbehaving
+    // Input from Textio here couldn't be splitted into arrays later, had to use scanner
     static Scanner scanner = new Scanner(System.in); 
    
     public static void main(String[] args){
@@ -90,14 +90,20 @@ public class libSystem {
             }
 
             // Updating/ Adding the book array
+            boolean isAdded = false;
             for (Book book : library){
                 if(book.title.equalsIgnoreCase(title)){
                     book.increaseBook(quantity);
+                    isAdded = true;
                     break;
                 }
             }
 
-            library.add(new Book(title, author, quantity));
+            // If the book is new
+            if (isAdded == false) {
+                library.add(new Book(title, author, quantity));
+            }
+            
             System.out.println("Book has been successfully added!");
             
             // Repeat Operation
