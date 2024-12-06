@@ -1,104 +1,168 @@
 // Write the Javadoc and use while loop to display
 // Since program is going to be classless write separate functions using access modifiers
 // Working with methods
-/* This is a student record management system for an administration */
 import textio.TextIO;
 import java.util.ArrayList;
 import java.util.Scanner;
-public class recordManagement{
-    /* Initialization of arrays for each attribute of students records */
+/**
+ * <h1>Student Record Management System</h1>
+ * This class implements a Student Record Management System designed for administrators. 
+ * It allows administrators to add new student records, update existing records, and view all records.
+ * 
+ * <p>The system stores student details using ArrayLists for dynamic storage, and 
+ * methods provide the functionality for managing records.</p>
+ * 
+ * <h2>Features:</h2>
+ * <ul>
+ *   <li>Add new students</li>
+ *   <li>Update existing student records</li>
+ *   <li>View all student records</li>
+ * </ul>
+ * 
+ * <h2>Usage:</h2>
+ * <p>Run the main method to start the program. The menu-driven interface guides the user through the available options.</p>
+ * 
+ * @author Charles Oluwatuase
+ * @version 1.0
+ */
+public class recordManagement {
+
+    /**
+     * Stores the IDs of the students in the system.
+     */
     static ArrayList<Integer> studentIds = new ArrayList<>();
+
+    /**
+     * Stores the names of the students.
+     */
     static ArrayList<String> studentNames = new ArrayList<>();
+
+    /**
+     * Stores the ages of the students.
+     */
     static ArrayList<Integer> studentAges = new ArrayList<>();
+
+    /**
+     * Stores the grades of the students.
+     */
     static ArrayList<String> studentGrades = new ArrayList<>();
 
-    /* The totalRecord function  to get the total of students records*/
-    private static int totalRecord(){
+    /**
+     * Calculates the total number of student records in the system.
+     * 
+     * @return The total number of student records.
+     */
+    private static int totalRecord() {
         return studentIds.size();
     }
 
-    /* The addStudents subroutine ensures ID is not duplicated before
-     * adding the attibutes provided to records
+    /**
+     * Adds a new student to the system.
+     * Ensures that the student ID is not already in the system.
+     * 
+     * @param id    The unique ID of the student.
+     * @param name  The name of the student.
+     * @param age   The age of the student.
+     * @param grade The grade of the student.
      */
-    private static void addStudents(int id, String name, int age, String grade){
-        // To check if record existed already
+    private static void addStudents(int id, String name, int age, String grade) {
         boolean recordExists = false;
-        if (studentIds.size() != 0 ) {
+
+        if (studentIds.size() != 0) {
             for (int i = 0; i < studentIds.size(); i++) {
-                if (studentIds.get(i) == id){
+                if (studentIds.get(i) == id) {
                     recordExists = true;
                     break;
                 }
             }
         }
-        if (recordExists == true) {
+
+        if (recordExists) {
             int position = studentIds.indexOf(id);
             String exName = studentNames.get(position);
             String exGrade = studentGrades.get(position);
             int exAge = studentAges.get(position);
-            System.out.println("Error: This Id mactches an ID in records");
+            System.out.println("Error: This ID matches an ID in the records.");
             System.out.println(id + " " + exName + " " + exAge + " " + exGrade);
             return;
         }
+
         studentIds.add(id);
         studentNames.add(name);
         studentAges.add(age);
         studentGrades.add(grade);
-    } //Add students ends here
-    
-    /* The updateRecords subroutine ensures the ID provided is in the records before updating it. </br>
-     * This method stores the position of the ID provided in its arraylist
-     * to index the position to set the new attributes in there various arraylist. </br>
-     * This is done to make Arraylist index entry correct human error in attribute entry
-    */
-    private static void updateRecords(int id, String name, int age, String grade){
-        // This boolean is to check if the record of the ID provided exists
+    }
+
+    /**
+     * Updates the record of an existing student based on their ID.
+     * 
+     * @param id    The ID of the student whose record is to be updated.
+     * @param name  The new name of the student.
+     * @param age   The new age of the student.
+     * @param grade The new grade of the student.
+     */
+    private static void updateRecords(int id, String name, int age, String grade) {
         boolean noRecord = true;
         int recordPosition = 0;
-        if (studentIds.size() != 0 ) {
+
+        if (studentIds.size() != 0) {
             for (int i = 0; i < studentIds.size(); i++) {
-                if(studentIds.get(i) == id){
+                if (studentIds.get(i) == id) {
                     noRecord = false;
                     recordPosition = i;
                     break;
                 }
             }
         }
-        // Only executes if ID isn't valid
-        if (noRecord == true) {
-            System.out.println("Error: There is no record of the ID provided");
+
+        if (noRecord) {
+            System.out.println("Error: There is no record of the ID provided.");
             return;
         }
-        // Update records
+
         studentNames.set(recordPosition, name);
         studentAges.set(recordPosition, age);
         studentGrades.set(recordPosition, grade);
-    } // records updates end here
+    }
 
-    /* This subroutine displays all the existing record and the total number of existing records */
-    private static void displayAllRecords(){
+    /**
+     * Displays all student records currently stored in the system.
+     * If no records are available, it notifies the user.
+     */
+    private static void displayAllRecords() {
         if (studentIds.size() != 0) {
             for (int i = 0; i < studentIds.size(); i++) {
-                System.out.println("ID: " + studentIds.get(i) +" NAME: "+ studentNames.get(i) +" Age: "+ studentAges.get(i) +" Grade: "+ studentGrades.get(i));
+                System.out.println("ID: " + studentIds.get(i) + 
+                                   " NAME: " + studentNames.get(i) + 
+                                   " Age: " + studentAges.get(i) + 
+                                   " Grade: " + studentGrades.get(i));
             }
-            System.out.println("There are a total of " + totalRecord() + " Records");
+            System.out.println("There are a total of " + totalRecord() + " records.");
         } else {
-            System.out.println("There are no records to display");
+            System.out.println("There are no records to display.");
         }
     }
 
-    /* Main to Display the Administrator's Interface. <br/>
-     * TextIO functions well for the input. 
-     * The package does error handling,
-     * It prompts the admin to re-enter-if input does not match
-     * the data type it is assigned to-instead of crashing the program.
-    */
+    /**
+     * The main method serves as the entry point of the program.
+     * It provides a menu-driven interface for administrators to interact with the system.
+     * 
+     * <p>Features:</p>
+     * <ul>
+     *   <li>Add a new student</li>
+     *   <li>Update an existing student's record</li>
+     *   <li>View all student records</li>
+     *   <li>Exit the program</li>
+     * </ul>
+     * 
+     * <p>The program uses the {@code TextIO} library for input handling and error management.</p>
+     * 
+     * @param args Command-line arguments (not used in this program).
+     */
     public static void main(String[] args) {
         int choice;
-        /* Do-while loop to exit the program easily without extra codes,
-         * and to reduce updating of excess variables
-         */
         Scanner scanner = new Scanner(System.in);
+
         do {
             System.out.println("Welcome to the Student Record Management System");
             System.err.println("1. Add New Students");
@@ -107,6 +171,7 @@ public class recordManagement{
             System.out.println("4. Exit");
             System.out.println("Enter your Choice from the Options");
             choice = TextIO.getInt();
+
             switch (choice) {
                 case 1:
                     System.out.print("Enter Name: ");
@@ -134,15 +199,14 @@ public class recordManagement{
                     displayAllRecords();
                     break;
                 case 4:
-                    System.out.println("You are now Exiting Students Records, Bye!");
+                    System.out.println("You are now exiting Student Records. Goodbye!");
                     break;
                 default:
-                    System.out.println("Error: Invalid Input Try Again!");
+                    System.out.println("Error: Invalid input. Try again!");
                     break;
             }
         } while (choice != 4);
 
-        /* Scanner was closed to prevent data leakage */
         scanner.close();
     }
 }
