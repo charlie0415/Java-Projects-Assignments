@@ -20,7 +20,7 @@ public class recordManagement{
     /* The addStudents subroutine ensures ID is not duplicated before
      * adding the attibutes provided to records
      */
-    public static void addStudents(int id, String name, int age, String grade){
+    private static void addStudents(int id, String name, int age, String grade){
         // To check if record existed already
         boolean recordExists = false;
         if (studentIds.size() != 0 ) {
@@ -51,7 +51,7 @@ public class recordManagement{
      * to index the position to set the new attributes in there various arraylist. </br>
      * This is done to make Arraylist index entry correct human error in attribute entry
     */
-    public static void updateRecords(int id, String name, int age, String grade){
+    private static void updateRecords(int id, String name, int age, String grade){
         // This boolean is to check if the record of the ID provided exists
         boolean noRecord = true;
         int recordPosition = 0;
@@ -76,7 +76,7 @@ public class recordManagement{
     } // records updates end here
 
     /* This subroutine displays all the existing record and the total number of existing records */
-    public static void displayAllRecords(){
+    private static void displayAllRecords(){
         if (studentIds.size() != 0) {
             for (int i = 0; i < studentIds.size(); i++) {
                 System.out.println("ID: " + studentIds.get(i) +" NAME: "+ studentNames.get(i) +" Age: "+ studentAges.get(i) +" Grade: "+ studentGrades.get(i));
