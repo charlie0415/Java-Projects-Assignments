@@ -1,27 +1,26 @@
-// Write the Javadoc and use while loop to display
+// Write the Javadoc and use do while loop to display
 // Since program is going to be classless write separate functions using access modifiers
 // Working with methods
 import textio.TextIO;
 import java.util.ArrayList;
 import java.util.Scanner;
 /**
- * <h1>Student Record Management System</h1>
- * This class implements a Student Record Management System designed for administrators. 
- * It allows administrators to add new student records, update existing records, and view all records.
+ * Student Record Management System
+ * <p>
+ * This class implements a system to manage student records for administrators. 
+ * It allows adding, updating, and viewing student details using a menu-driven interface.
+ * </p>
  * 
- * <p>The system stores student details using ArrayLists for dynamic storage, and 
- * methods provide the functionality for managing records.</p>
- * 
- * <h2>Features:</h2>
+ * Features:
  * <ul>
  *   <li>Add new students</li>
  *   <li>Update existing student records</li>
  *   <li>View all student records</li>
  * </ul>
  * 
- * <h2>Usage:</h2>
- * <p>Run the main method to start the program. The menu-driven interface guides the user through the available options.</p>
- * 
+ * Usage:
+ * <p>Run the main method to interact with the program. The menu guides administrators through the options.</p>
+ *  
  * @author Charles Oluwatuase
  * @version 1.0
  */
