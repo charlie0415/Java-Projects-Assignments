@@ -88,9 +88,10 @@ public class recordManagement{
     }
 
     /* Main to Display the Administrator's Interface. <br/>
-     * TextIO functions well for the input, the package does error handling
-     * It prompts the admin to re-enter if, input does not match
-     * the data type it is assigned to.
+     * TextIO functions well for the input. 
+     * The package does error handling,
+     * It prompts the admin to re-enter-if input does not match
+     * the data type it is assigned to-instead of crashing the program.
     */
     public static void main(String[] args) {
         int choice;
