@@ -6,15 +6,20 @@ import textio.TextIO;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class recordManagement{
+    /* Initialization of arrays for each attribute of students records */
     static ArrayList<Integer> studentIds = new ArrayList<>();
     static ArrayList<String> studentNames = new ArrayList<>();
     static ArrayList<Integer> studentAges = new ArrayList<>();
     static ArrayList<String> studentGrades = new ArrayList<>();
-    // Method for total records
+
+    /* The totalRecord function  to get the total of students records*/
     private static int totalRecord(){
         return studentIds.size();
     }
-    // Add student function
+
+    /* The addStudents subroutine ensures ID is not duplicated before
+     * adding the attibutes provided to records
+     */
     public static void addStudents(int id, String name, int age, String grade){
         // To check if record existed already
         boolean recordExists = false;
@@ -41,7 +46,13 @@ public class recordManagement{
         studentGrades.add(grade);
     } //Add students ends here
     
+    /* The updateRecords subroutine ensures the ID provided is in the records before updating it. </br>
+     * This method stores the position of the ID provided in its arraylist
+     * to index the position to set the new attributes in there various arraylist. </br>
+     * This is done to make Arraylist index entry correct human error in attribute entry
+    */
     public static void updateRecords(int id, String name, int age, String grade){
+        // This boolean is to check if the record of the ID provided exists
         boolean noRecord = true;
         int recordPosition = 0;
         if (studentIds.size() != 0 ) {
@@ -53,6 +64,7 @@ public class recordManagement{
                 }
             }
         }
+        // Only executes if ID isn't valid
         if (noRecord == true) {
             System.out.println("Error: There is no record of the ID provided");
             return;
@@ -63,6 +75,7 @@ public class recordManagement{
         studentGrades.set(recordPosition, grade);
     } // records updates end here
 
+    /* This subroutine displays all the existing record and the total number of existing records */
     public static void displayAllRecords(){
         if (studentIds.size() != 0) {
             for (int i = 0; i < studentIds.size(); i++) {
@@ -74,9 +87,16 @@ public class recordManagement{
         }
     }
 
-    // Main to display the admin interface
+    /* Main to Display the Administrator's Interface. <br/>
+     * TextIO functions well for the input, the package does error handling
+     * It prompts the admin to re-enter if, input does not match
+     * the data type it is assigned to.
+    */
     public static void main(String[] args) {
         int choice;
+        /* Do-while loop to exit the program easily without extra codes,
+         * and to reduce updating of excess variables
+         */
         Scanner scanner = new Scanner(System.in);
         do {
             System.out.println("Welcome to the Student Record Management System");
@@ -120,6 +140,8 @@ public class recordManagement{
                     break;
             }
         } while (choice != 4);
+
+        /* Scanner was closed to prevent data leakage */
         scanner.close();
     }
 }
