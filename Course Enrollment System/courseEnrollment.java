@@ -163,35 +163,34 @@ public class courseEnrollment {
 
     // Course addition with operation repetiton on admin inteface
     private static void addCourse(){
-        boolean repeat = true;
-        while (repeat) {
+        boolean repetiton;
+        do {
             System.out.print("Course Name: ");
             String name = TextIO.getlnString();
             System.out.print("Course ID: ");
             String code = TextIO.getln();
             System.out.print("Course Maximum Capacity: ");
             int maxCap = TextIO.getlnInt();
-            CourseManagement.addCourse(code, name, maxCap);
-            System.out.print("Enter 'Y' to continue adding more courses or 'N' to stop: ");
-            char input = TextIO.getlnChar();
-            if (Character.toLowerCase(input) == 'y') {
-                repeat = true;
+            Course course = null;
+            for (Course i : CourseManagement.getCourses()){
+                if (i.getCode().equals(code)) {
+                    course = i;
+                    course.setName(name);
+                    course.setMaxCapacity(maxCap);
+                    System.out.println("Course Already Exits\nUpdating name and Maximum Capacity to " + name + " " + maxCap);
+                }
             }
-            else if (Character.toLowerCase(input) == 'n') {
-                System.out.println("Course has been added");
-                System.out.println("Returning to Main menu");
-                repeat = false;
+            if (course == null) {
+                CourseManagement.addCourse(code, name, maxCap);
+                System.out.println("Course has been added");   
             }
-            else{
-                System.out.println("Invalid Input, returning to Main menu");
-                return;
-            }   
-        }
+            repetiton = repeat("add more course");
+        } while (repetiton);
     } // END of addCourse
 
     private static void enrolledStudent(){
-        boolean repeat = true;
-        while (repeat) {
+        boolean repeat;
+        do {
             System.out.print("Enter Student's Name: ");
             String name = TextIO.getlnString();
             System.out.print("Enter Student's ID: ");
@@ -232,8 +231,8 @@ public class courseEnrollment {
                 System.out.println("invalid input");
                 System.out.println("Enrollment Unsuccessful. Returning to Main Menu");
             }
-            repeat = false;
-        }
+            repeat = repeat("enroll more student");
+        } while (repeat);
     } // End of enrolledStudent
 
     private static void assignGrade(){
@@ -280,6 +279,7 @@ public class courseEnrollment {
                     return;
                 }
             }
+            repeat = repeat("assign grades");
         }
     } // End of assignGrades
 
@@ -295,4 +295,22 @@ public class courseEnrollment {
         }
         System.out.println("Invalid Input. Id does not exist in Students' Record");
     } // End of overallGrade
+
+
+    private static boolean repeat(String op){
+        boolean repeatStat;
+        System.out.print("Enter 'Y' to continue to " + op + " or 'N' to stop: ");
+        char input = TextIO.getlnChar();
+        if (Character.toLowerCase(input) == 'y') {
+            repeatStat = true;
+        }
+        else if (Character.toLowerCase(input) == 'n') {
+            System.out.println("Returning to Main menu");
+            repeatStat = false;
+        }else{
+            System.out.println("Invalid Input, returning to Main menu");
+            repeatStat = false;
+        }   
+        return repeatStat;
+    }
 } // End of file class
